@@ -1,0 +1,60 @@
+* Introduction
+
+  It really started with a [[https://skillsmatter.com/skillscasts/3537-lightening-talk-literate-programming-with-clojure-and-org-babel][magical talk]] by [[https://twitter.com/magic_bloat][Andrew Cowper]] on literate
+  programming with org-mode and clojure.
+
+  I was then inspired by [[https://github.com/t-ob/dotfiles][Tom O'Brien's dotfiles]] to do a org-mode
+  version of my emacs config. I also completely broke my emacs config
+  trying to do some other things and I figured I should fix it
+  properly rather than just getting the basics back together.
+
+  The real content is in [[./org/config.org][config.org]], which would probably be more
+  interesting to read.
+
+  More recently I've been inspired by [[https://github.com/lotia][Ali Asad Lotia]] to use el-get
+  after having some struggles with some elpa upgrades. I'm hoping this
+  will give me greater control over my emacs config. I'll sill be able
+  to use (m)elpa, but also point directly at github and other publicly
+  accessible git repos and generally just be more in charge. It took
+  me a while to realise that Ali is right on this, but he is.
+
+  This emacs config was initially set up to run on Mac OS X using the
+  emacs from the very good [[http://emacsformacosx.com/][emacsformacosx.com]]. I've since moved over
+  to using Linux every day. There are still some mac specific bits on
+  config, but I don't know how much of it works any more. I try to be
+  aware of it, but it just isn't an OS I use much any more.
+
+  If you want to use this I suggest you do the following:
+
+  - create a emacs-config directory in your $HOME dir.
+  - clone this repo in that directory
+  - do a symbolic link from the clone to your .emacs.d directory
+  - fire up emacs
+  - wait a looooong time while the internet is downloaded
+
+  This is what I normally do. This lets me clone or create lots of new
+  emacs configurations without trashing any of the earlier ones and
+  lets me try a lot of things out. It seems to be working for me so
+  far.
+
+* Features
+
+  Here are the things this emacs config gives examples for:
+
+  - clojure support with cider
+  - using el-get for config with elpa and others
+  - Separating custom.el from the rest of your files.
+  - hippie expand
+  - upcasing and downcasing
+  - Using diminish to clean up a mode-line
+  - Using color themes and custom fonts
+  - removing chrome from the windows
+  - very basic helm mode setup
+  - a basic ido setup for somethings
+  - magit & git gutter mode
+  - using Emacs as a twitter client
+  - using Emacs as a gtalk/jabber client
+  - using Emacs as an irc client
+  - paredit and rainbow delimiters
+  - org-mode with some custom agendas and sorting
+  - emacs on Mac OS X fixes (vestigial now)
