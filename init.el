@@ -23,8 +23,7 @@
 (add-to-list 'el-get-recipe-path "~/.emacs.d/local/recipes")
 
 (setq el-get-sources
-      '(
-        (:name ace-window
+      '((:name ace-window
                :description "Like ace-jump-mode but for windows"
                :type git
                :url "git@github.com:abo-abo/ace-window.git"
@@ -38,6 +37,10 @@
                :description "csv-mode"
                :type git
                :url "git@github.com:emacsmirror/csv-mode.git")
+        (:name jabber
+               :description "A minimal jabber client"
+               :type elpa
+               :pkg-name jabber)
         (:name erc-colorize
                :description "Colorize the whole message in erc rather than just the nick"
                :type git
@@ -77,7 +80,7 @@
 	 css-eldoc
          csv-mode ;; syntax error in the file csv-mode-pkg.el
 	 diminish
-         emacs-jabber
+         jabber
 	 emms
 	 exec-path-from-shell
 	 discover
