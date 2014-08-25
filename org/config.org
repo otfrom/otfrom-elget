@@ -2446,7 +2446,7 @@
    csv files.
 
    #+BEGIN_SRC emacs-lisp
-     ;; (require 'csv-mode)
+     (require 'csv-mode)
    #+END_SRC
 
 * Multimedia

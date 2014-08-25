@@ -23,33 +23,37 @@
 (add-to-list 'el-get-recipe-path "~/.emacs.d/local/recipes")
 
 (setq el-get-sources
-      '((:name org-gcal
-               :description "Google Calendar integration for org-mode"
-               :type git
-               :url "git@github.com:myuhe/org-gcal.el.git"
-               :depends (deferred alert cl-lib org-mode))
+      '(
         (:name ace-window
                :description "Like ace-jump-mode but for windows"
                :type git
                :url "git@github.com:abo-abo/ace-window.git"
                :depends (ace-jump-mode))
+        (:name csv-mode
+               :description "csv-mode"
+               :type git
+               :url "git@github.com:emacsmirror/csv-mode.git")
         (:name erc-colorize
                :description "Colorize the whole message in erc rather than just the nick"
                :type git
                :url "git@github.com:thisirs/erc-colorize.git")
-        (:name grandshell-theme
-               :description "Purple-tastic theme"
-               :type git
-               :url "git@github.com:steckerhalter/grandshell-theme.git")
         (:name es-mode
                :description "Elasticsearch mode"
                :type git
                :url "git@github.com:dakrone/es-mode.git")
-	(:name rainbow-mode
+        (:name grandshell-theme
+               :description "Purple-tastic theme"
+               :type git
+               :url "git@github.com:steckerhalter/grandshell-theme.git")
+        (:name org-gcal
+               :description "Google Calendar integration for org-mode"
+               :type git
+               :url "git@github.com:myuhe/org-gcal.el.git"
+               :depends (deferred alert cl-lib org-mode))
+        (:name rainbow-mode
                :description "rainbow-mode"
                :type git
-               :url "git@github.com:emacsmirror/rainbow-mode.git")
-        ))
+               :url "git@github.com:emacsmirror/rainbow-mode.git")))
 
 ;; my packages
 (setq my-packages
@@ -66,7 +70,7 @@
 	 ;; color-identifiers-mode ;; this breaks alot lately
 	 company-mode
 	 css-eldoc
-	 ;; csv-mode ;; syntax error in the file csv-mode-pkg.el
+         csv-mode ;; syntax error in the file csv-mode-pkg.el
 	 diminish
          emacs-jabber
 	 emms
