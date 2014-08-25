@@ -29,6 +29,11 @@
                :type git
                :url "git@github.com:abo-abo/ace-window.git"
                :depends (ace-jump-mode))
+        (:name clojure-mode
+               :website "https://github.com/clojure-emacs/clojure-mode"
+               :description "Emacs support for the Clojure language. Without the deprecated clojure-test-mode being required."
+               :type elpa
+               :pkgname "clojure-mode")
         (:name csv-mode
                :description "csv-mode"
                :type git
