@@ -1184,6 +1184,26 @@
       (global-set-key [M-f11] 'default-agenda)
     #+END_SRC
 
+*** git-auto-commit
+
+    I want to keep all of this lovely stuff under version control but
+    I don't want to have to think about it.
+
+    #+BEGIN_SRC emacs-lisp
+      (require 'git-auto-commit nil t)
+
+      (eval-after-load 'git-auto-commit
+        '(progn
+           (setq gac-dir-set
+                 ;; we don't push our org files
+                 '(("~/org")))))
+
+      (setq gac-default-cmd-git-push "/bin/true")
+
+      (add-hook 'after-save-hook 'gac-commit-file)
+    #+END_SRC
+
+
 ** html, sgml, xml
 
 *** tagedit

@@ -86,6 +86,7 @@
 	 discover
          erc-colorize
          es-mode
+         git-auto-commit
 	 git-gutter-fringe+
 	 ;; github-browse-file ;; in melpa
 	 gist
