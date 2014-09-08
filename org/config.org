@@ -32,6 +32,14 @@
      (global-set-key (kbd "M-RET") 'hippie-expand)
    #+END_SRC
 
+** Browse Kill Ring
+
+   Stop doing C-y M-y M-y M-y. Do C-c y instead.
+
+   #+BEGIN_SRC emacs-lisp
+     (global-set-key "\C-cy" 'browse-kill-ring)
+   #+END_SRC
+
 ** upcase and downcase region
 
    I like to be able to do this. I get lots of things that come in

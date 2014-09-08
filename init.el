@@ -76,6 +76,7 @@
        '(ace-jump-mode
 	 ace-window
 	 align-cljlet
+         browse-kill-ring
 	 buffer-move
 	 cider
 	 clj-refactor
