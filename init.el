@@ -28,6 +28,12 @@
                :type git
                :url "git@github.com:abo-abo/ace-window.git"
                :depends (ace-jump-mode))
+        (:name cider
+               :website "https://github.com/clojure-emacs/cider"
+               :description "Clojure IDE and REPL for Emacs"
+               :type git
+               :url "git@github.com:clojure-emacs/cider.git"
+               :pkgname "cider")
         (:name clojure-mode
                :website "https://github.com/clojure-emacs/clojure-mode"
                :description "Emacs support for the Clojure language. Without the deprecated clojure-test-mode being required."
