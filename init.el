@@ -28,6 +28,9 @@
                :type git
                :url "git@github.com:abo-abo/ace-window.git"
                :depends (ace-jump-mode))
+        (:name queue
+               :description "The queue package"
+               :type elpa)
         (:name cider
                :website "https://github.com/clojure-emacs/cider"
                :description "Clojure IDE and REPL for Emacs"
@@ -118,6 +121,7 @@
 	 paredit
          popup
 	 projectile
+         queue
 	 rainbow-delimiters
 	 rainbow-mode
 	 refheap
