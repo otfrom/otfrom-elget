@@ -1285,7 +1285,6 @@
       (add-hook 'after-save-hook 'gac-commit-file)
     #+END_SRC
 
-
 ** html, sgml, xml
 
 *** tagedit
@@ -2221,7 +2220,14 @@
                            (kbd "{") 'paredit-open-curly)
                          (define-key paredit-mode-map
                            (kbd "}") 'paredit-close-curly)
+                         (rainbow-blocks-mode)
                          (local-set-key (kbd "C-;") 'comment-dwim)))
+    #+END_SRC
+
+    But let's not have Blocks be so big in the modeline.
+
+    #+BEGIN_SRC emacs-lisp
+      (diminish 'rainbow-blocks-mode "❒")
     #+END_SRC
 
 *** emacs-lisp
