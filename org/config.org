@@ -1172,6 +1172,15 @@
        (global-set-key [f12] 'org-capture)
      #+END_SRC
 
+**** Go to the current clock
+
+     I want to be able to go to the current clock to update things and
+     take notes.
+
+     #+BEGIN_SRC emacs-lisp
+       (global-set-key [f11] 'org-clock-goto)
+     #+END_SRC
+
 **** Capture Templates
 
      To do, respond, notes, journals, meetings and phone calls. These
