@@ -1138,13 +1138,13 @@
          (switch-to-buffer "#kixi")
          ;;(mu4e)
          (window-number-select 3)
-         (switch-to-buffer "#clojure-emacs")
+         (switch-to-buffer "#nhsengland")
          (window-number-select 4)
          (switch-to-buffer "#ldnclj")
          (window-number-select 5)
          (if (get-buffer boss-chat)
            (switch-to-buffer boss-chat)
-         (switch-to-buffer "#clojurescript"))
+         (switch-to-buffer "#clojure-beginners"))
 
          ;; And go to window 2
          (window-number-select 2))
@@ -1584,7 +1584,7 @@
     like #ukodi and ##cleanweb. And ones for Mastodon C like #kixi.
 
     #+BEGIN_SRC emacs-lisp
-      (setq erc-autojoin-channels-alist '(("freenode.net" "##cleanweb" "#kixi" "#theodi" "#ldnclj" "#clojure-emacs" "#clojurescript" "#nhsengland")))
+      (setq erc-autojoin-channels-alist '(("freenode.net" "##cleanweb" "#kixi" "#theodi" "#ldnclj" "#clojure-emacs" "#clojurescript" "#nhsengland" "#clojure-beginners")))
     #+END_SRC
 
 *** Credentials
