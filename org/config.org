@@ -117,6 +117,14 @@
      (global-discover-mode 1)
    #+END_SRC
 
+** Shell hot key
+
+   Gimme a shell now!
+
+   #+BEGIN_SRC emacs-lisp
+     (global-set-key (kbd "s-!") 'shell)
+   #+END_SRC
+
 ** What do I use
 
    Profile your usage.
@@ -311,6 +319,15 @@
      (column-number-mode 1)
    #+END_SRC
 
+** Powerline
+
+   Because why not steal good things from vim.
+
+   #+BEGIN_SRC emacs-lisp
+     (require 'powerline)
+     (powerline-default-theme)
+   #+END_SRC
+
 ** Startup Screen
 
    I'd also like to ski the startup screen and go straight to
@@ -340,6 +357,14 @@
 
 * Tool Configuration
 
+** password store
+
+   Password store seems pretty good. I need longer passwords though.
+
+   #+BEGIN_SRC emacs-lisp
+     (setq password-store-password-length 10)
+   #+END_SRC
+
 ** ediff
 
    ediff is my favourite way of comparing files, directories, versions
@@ -359,7 +384,17 @@
    #+BEGIN_SRC emacs-lisp
      (require 'company)
      (add-hook 'after-init-hook 'global-company-mode)
-     (diminish 'company-mode "CA")
+     (diminish 'company-mode "☭")
+   #+END_SRC
+
+** sunshine
+
+   What is the weather like at home?
+
+   #+BEGIN_SRC emacs-lisp
+     (setq sunshine-location "London, England")
+     (setq sunshine-show-icons t)
+     (setq sunshine-units "metric")
    #+END_SRC
 
 * directories, navigation, searching, movement
@@ -413,6 +448,28 @@
       (setq ido-use-filename-at-point 'guess)
     #+END_SRC
 
+*** ido vertical mode
+
+    Because sometimes you just can't see what is going on
+    horizontally.
+
+    #+BEGIN_SRC emacs-lisp
+      (require 'ido-vertical-mode)
+      (ido-vertical-mode 1)
+    #+END_SRC
+
+*** smex
+
+    smex, built on top of ido
+
+    #+BEGIN_SRC emacs-lisp
+      (smex-initialize)
+      (global-set-key (kbd "M-x") 'smex)
+      (global-set-key (kbd "M-X") 'smex-major-mode-commands)
+      ;; This is your old M-x.
+      (global-set-key (kbd "C-c C-c M-x") 'execute-extended-command)
+    #+END_SRC
+
 ** git
 
 *** magit
@@ -420,6 +477,7 @@
     magit is a *fantastic* mode for dealing with git.
 
     #+BEGIN_SRC emacs-lisp
+;;       (setq magit-emacsclient-executable "/usr/bin/emacsclient")
        (require 'magit)
     #+END_SRC
 
@@ -595,7 +653,7 @@
    so let's diminish it.
 
    #+BEGIN_SRC emacs-lisp
-     (diminish 'projectile-mode)
+     (setq projectile-mode-line '(:eval (format "➚[%s]" (projectile-project-name))))
    #+END_SRC
 
 *** projectile and helm
@@ -680,7 +738,7 @@
 
     #+BEGIN_SRC emacs-lisp
       (add-hook 'org-mode-hook
-                (lambda () (local-set-key (kbd "s-h") 'helm-org-headlines)))
+                (lambda () (local-set-key (kbd "s-h") 'helm-org-in-buffer-headings)))
     #+END_SRC
 
 *** org-cheatsheet
@@ -987,6 +1045,13 @@
         (org-clock-persistence-insinuate)
       #+END_SRC
 
+***** Make sure you are clocked in when doing something
+
+      #+BEGIN_SRC emacs-lisp
+        (require 'clocker)
+        (diminish 'clocker-mode "⌚")
+      #+END_SRC
+
 ***** Tracking effort vs estimates with clocksum
 
       I think of days as being working days rather than groups of 24
@@ -1039,7 +1104,7 @@
          (interactive)
          (delete-other-windows)
 
-         (if (< (frame-width) 275)
+         (if (< (frame-width) 237)
              ;; Small frame
              (progn
                ;; create our 2 columns
@@ -1079,7 +1144,7 @@
          (window-number-select 5)
          (if (get-buffer boss-chat)
            (switch-to-buffer boss-chat)
-         (switch-to-buffer "*-jabber-roster-*"))
+         (switch-to-buffer "#clojurescript"))
 
          ;; And go to window 2
          (window-number-select 2))
@@ -1315,7 +1380,7 @@
 
     #+BEGIN_SRC emacs-lisp
       (defun helm-markdown-headlines ()
-        "Display headlines for the current Clojure file."
+        "Display headlines for the current Markdown file."
         (interactive)
         (helm :sources '(((name . "Markdown Headlines")
                           (volatile)
@@ -1519,7 +1584,7 @@
     like #ukodi and ##cleanweb. And ones for Mastodon C like #kixi.
 
     #+BEGIN_SRC emacs-lisp
-      (setq erc-autojoin-channels-alist '(("freenode.net" "##cleanweb" "#kixi" "#theodi" "#ldnclj" "#clojure-emacs")))
+      (setq erc-autojoin-channels-alist '(("freenode.net" "##cleanweb" "#kixi" "#theodi" "#ldnclj" "#clojure-emacs" "#clojurescript" "#nhsengland")))
     #+END_SRC
 
 *** Credentials
@@ -1540,8 +1605,37 @@
         (let ((buffers (and (fboundp 'erc-buffer-list)
                             (erc-buffer-list))))
           (if buffers
-              (switch-to-buffer (car buffers))
+              (switch-to-buffer "#kixi")
             (erc :server "irc.freenode.net"))))
+
+      (global-set-key [s-f11] 'switch-to-irc)
+    #+END_SRC
+
+*** erc ghost old nick
+
+    #+BEGIN_SRC emacs-lisp
+      (defun erc-ghost-maybe (server nick)
+        "Send GHOST message to NickServ if NICK ends with `erc-nick-uniquifier'.
+      The function is suitable for `erc-after-connect'."
+        (when (string-match (format "\\(.*?\\)%s+$" erc-nick-uniquifier) nick)
+          (let ((nick-orig (match-string 1 nick))
+                (password erc-session-password))
+            (when (y-or-n-p (format "Current nick is '%s'. Do you want to ghost?"
+                                    nick))
+              (erc-message "PRIVMSG" (format "NickServ GHOST %s %s"
+                                             nick-orig password))
+              (erc-cmd-NICK nick-orig)
+              (erc-message "PRIVMSG" (format "NickServ identify %s %s"
+                                             nick-orig password))))))
+      (add-hook 'erc-after-connect 'erc-ghost-maybe)
+    #+END_SRC
+
+*** Handle idling
+
+    Mark me away if I'm idle for more than 5 mins
+
+    #+BEGIN_SRC emacs-lisp
+      (setq erc-autoaway-idle-seconds 600)
     #+END_SRC
 
 *** Logging
@@ -1657,9 +1751,9 @@
     files in /usr/local/share/emacs/site-lisp/mu4e/.
 
     #+BEGIN_SRC emacs-lisp
-      (add-to-list 'load-path "/usr/local/share/emacs/site-lisp/mu4e/")
-      (require 'mu4e)
-      (setq mu4e-user-mail-address-list (list "bld@otfrom.com" "bruce@mastodonc.com"))
+      ;; (add-to-list 'load-path "/usr/local/share/emacs/site-lisp/mu4e/")
+      ;; (require 'mu4e)
+      ;; (setq mu4e-user-mail-address-list (list "bld@otfrom.com" "bruce@mastodonc.com"))
     #+END_SRC
 
 **** Don't hog my minibuffer
@@ -1674,7 +1768,7 @@
      much even with that.
 
      #+BEGIN_SRC emacs-lisp
-       (setq mu4e-hide-index-messages 1)
+     ;  (setq mu4e-hide-index-messages 1)
      #+END_SRC
 
 **** Fetching mail
@@ -1683,8 +1777,8 @@
      minutes, just to be lucky.
 
      #+BEGIN_SRC emacs-lisp
-       (setq mu4e-get-mail-command "offlineimap")
-       (setq mu4e-update-interval (* 32 60))
+     ;  (setq mu4e-get-mail-command "offlineimap")
+     ;  (setq mu4e-update-interval (* 32 60))
      #+END_SRC
 
 **** Shortcuts
@@ -1693,9 +1787,9 @@
      interested in.
 
      #+BEGIN_SRC emacs-lisp
-       (setq mu4e-maildir-shortcuts
-             '(("/mastodonc/INBOX" . ?w)
-               ("/otfrom/INBOX" . ?p)))
+       ;; (setq mu4e-maildir-shortcuts
+       ;;       '(("/mastodonc/INBOX" . ?w)
+       ;;         ("/otfrom/INBOX" . ?p)))
      #+END_SRC
 
 **** Multiple Accounts
@@ -1710,13 +1804,13 @@
       about my personal account.
 
       #+BEGIN_SRC emacs-lisp
-        (setq mu4e-refile-folder "/mastodonc/all"
-              mu4e-sent-folder "/mastodonc/sent"
-              mu4e-drafts-folder "/mastodonc/drafts"
-              mu4e-trash-folder "/mastodonc/trash"
-              user-mail-address "bruce@mastodonc.com"
-              message-signature-file "/home/bld/.signature.work"
-              user-mail-address "bruce@mastodonc.com")
+        ;; (setq mu4e-refile-folder "/mastodonc/all"
+        ;;       mu4e-sent-folder "/mastodonc/sent"
+        ;;       mu4e-drafts-folder "/mastodonc/drafts"
+        ;;       mu4e-trash-folder "/mastodonc/trash"
+        ;;       user-mail-address "bruce@mastodonc.com"
+        ;;       message-signature-file "/home/bld/.signature.work"
+        ;;       user-mail-address "bruce@mastodonc.com")
       #+END_SRC
 
 ***** The account switching
@@ -1735,21 +1829,21 @@
       #+END_QUOTE
 
       #+BEGIN_SRC emacs-lisp
-        (defvar my-mu4e-account-alist
-          '(("mastodonc"
-             (mu4e-refile-folder "/mastodonc/all")
-             (mu4e-sent-folder "/mastodonc/sent")
-             (mu4e-drafts-folder "/mastodonc/drafts")
-             (mu4e-trash-folder "/mastodonc/trash")
-             (user-mail-address "bruce@mastodonc.com")
-             (message-signature-file "/home/bld/.signature.work"))
-            ("otfrom"
-             (mu4e-refile-folder "/otfrom/all")
-             (mu4e-sent-folder "/otfrom/sent")
-             (mu4e-drafts-folder "/otfrom/drafts")
-             (mu4e-trash-folder "/otfrom/trash")
-             (user-mail-address "bld@otfrom.com")
-             (message-signature-file "/home/bld/.signature"))))
+        ;; (defvar my-mu4e-account-alist
+        ;;   '(("mastodonc"
+        ;;      (mu4e-refile-folder "/mastodonc/all")
+        ;;      (mu4e-sent-folder "/mastodonc/sent")
+        ;;      (mu4e-drafts-folder "/mastodonc/drafts")
+        ;;      (mu4e-trash-folder "/mastodonc/trash")
+        ;;      (user-mail-address "bruce@mastodonc.com")
+        ;;      (message-signature-file "/home/bld/.signature.work"))
+        ;;     ("otfrom"
+        ;;      (mu4e-refile-folder "/otfrom/all")
+        ;;      (mu4e-sent-folder "/otfrom/sent")
+        ;;      (mu4e-drafts-folder "/otfrom/drafts")
+        ;;      (mu4e-trash-folder "/otfrom/trash")
+        ;;      (user-mail-address "bld@otfrom.com")
+        ;;      (message-signature-file "/home/bld/.signature"))))
       #+END_SRC
 
 ***** Add a switch function to the hook
@@ -1759,25 +1853,25 @@
       that you can just turn on.
 
       #+BEGIN_SRC emacs-lisp
-         (defun my-mu4e-set-account ()
-               "Set the account for composing a message."
-               (let* ((account
-                       (if mu4e-compose-parent-message
-                           (let ((maildir (mu4e-message-field mu4e-compose-parent-message :maildir)))
-                             (string-match "/\\(.*?\\)/" maildir)
-                             (match-string 1 maildir))
-                         (completing-read (format "Compose with account: (%s) "
-                                                  (mapconcat #'(lambda (var) (car var)) my-mu4e-account-alist "/"))
-                                          (mapcar #'(lambda (var) (car var)) my-mu4e-account-alist)
-                                          nil t nil nil (caar my-mu4e-account-alist))))
-                      (account-vars (cdr (assoc account my-mu4e-account-alist))))
-                 (if account-vars
-                     (mapc #'(lambda (var)
-                               (set (car var) (cadr var)))
-                           account-vars)
-                   (error "No email account found"))))
+        ;;  (defun my-mu4e-set-account ()
+        ;;        "Set the account for composing a message."
+        ;;        (let* ((account
+        ;;                (if mu4e-compose-parent-message
+        ;;                    (let ((maildir (mu4e-message-field mu4e-compose-parent-message :maildir)))
+        ;;                      (string-match "/\\(.*?\\)/" maildir)
+        ;;                      (match-string 1 maildir))
+        ;;                  (completing-read (format "Compose with account: (%s) "
+        ;;                                           (mapconcat #'(lambda (var) (car var)) my-mu4e-account-alist "/"))
+        ;;                                   (mapcar #'(lambda (var) (car var)) my-mu4e-account-alist)
+        ;;                                   nil t nil nil (caar my-mu4e-account-alist))))
+        ;;               (account-vars (cdr (assoc account my-mu4e-account-alist))))
+        ;;          (if account-vars
+        ;;              (mapc #'(lambda (var)
+        ;;                        (set (car var) (cadr var)))
+        ;;                    account-vars)
+        ;;            (error "No email account found"))))
 
-        (add-hook 'mu4e-compose-pre-hook 'my-mu4e-set-account)
+        ;; (add-hook 'mu4e-compose-pre-hook 'my-mu4e-set-account)
       #+END_SRC
 
 **** Unicode
@@ -1786,7 +1880,7 @@
 
      #+BEGIN_SRC emacs-lisp
        ;; Use fancy chars
-       (setq mu4e-use-fancy-chars t)
+     ;;  (setq mu4e-use-fancy-chars t)
      #+END_SRC
 
 **** Gmail quirks and feature simulations
@@ -1797,7 +1891,7 @@
       when I'm looking at messages in my inbox.
 
       #+BEGIN_SRC emacs-lisp
-        (setq mu4e-headers-include-related t)
+      ;;  (setq mu4e-headers-include-related t)
       #+END_SRC
 
 ***** Skip duplicates
@@ -1807,7 +1901,7 @@
       to skip the duplicates.
 
       #+BEGIN_SRC emacs-lisp
-        (setq mu4e-headers-skip-duplicates t)
+      ;;  (setq mu4e-headers-skip-duplicates t)
       #+END_SRC
 
 **** View html only emails in the browser
@@ -1816,8 +1910,8 @@
      hitting aV.
 
      #+BEGIN_SRC emacs-lisp
-       (add-to-list 'mu4e-view-actions
-                    '("ViewInBrowser" . mu4e-action-view-in-browser) t)
+     ;;  (add-to-list 'mu4e-view-actions
+     ;;               '("ViewInBrowser" . mu4e-action-view-in-browser) t)
      #+END_SRC
 
 **** mu4e and org-mode capturing
@@ -1826,7 +1920,7 @@
      of the reason for having email in emacs anyway.
 
      #+BEGIN_SRC emacs-lisp
-       (require 'org-mu4e)
+     ;;  (require 'org-mu4e)
      #+END_SRC
 
 **** mu4e and org-contacts
@@ -1834,13 +1928,13 @@
      I want to use org-contacts rather than bbdb.
 
      #+BEGIN_SRC emacs-lisp
-       (require 'org-contacts)
-       (setq org-contacts-files (quote ("~/org/contacts.org")))
-       (setq mu4e-org-contacts-file  "~/org/contacts.org")
-       (add-to-list 'mu4e-headers-actions
-                    '("org-contact-add" . mu4e-action-add-org-contact) t)
-       (add-to-list 'mu4e-view-actions
-                    '("org-contact-add" . mu4e-action-add-org-contact) t)
+       ;; (require 'org-contacts)
+       ;; (setq org-contacts-files (quote ("~/org/contacts.org")))
+       ;; (setq mu4e-org-contacts-file  "~/org/contacts.org")
+       ;; (add-to-list 'mu4e-headers-actions
+       ;;              '("org-contact-add" . mu4e-action-add-org-contact) t)
+       ;; (add-to-list 'mu4e-view-actions
+       ;;              '("org-contact-add" . mu4e-action-add-org-contact) t)
      #+END_SRC
 
 **** And a hot key
@@ -1849,7 +1943,7 @@
      to be the hot key.
 
      #+BEGIN_SRC emacs-lisp
-       (global-set-key [f11] 'mu4e)
+     ;;  (global-set-key [f11] 'mu4e)
      #+END_SRC
 
 ** Web Browsing
@@ -1862,7 +1956,8 @@
 
     #+BEGIN_SRC emacs-lisp
       (require 'w3m)
-      (setq browse-url-browser-function 'w3m-browse-url)
+      ;;(setq browse-url-browser-function 'w3m-browse-url)
+      (setq browse-url-browser-function 'browse-url-firefox)
       (global-set-key "\C-xm" 'browse-url-at-point)
       (setq w3m-use-cookies t)
     #+END_SRC
@@ -1877,7 +1972,7 @@
      (defun comms-up ()
        (interactive)
        (twittering-mode)
-       (jabber-connect-all)
+       ;;(jabber-connect-all)
        (erc))
 
      (defun comms ()
@@ -1912,9 +2007,7 @@
              (window-number-select 4)
              (switch-to-buffer "#ldnclj")
              (window-number-select 5)
-             (if (get-buffer boss-chat)
-                 (switch-to-buffer boss-chat)
-               (switch-to-buffer "*-jabber-roster-*"))
+             (switch-to-buffer "#clojurescript")
 
              ;; go to and grow the top left window
              (window-number-select 1)
@@ -1959,9 +2052,7 @@
            (window-number-select 4)
            (org-agenda nil "Cm") ;; My Agenda
            (window-number-select 6)
-           (if (get-buffer boss-chat)
-                 (switch-to-buffer boss-chat)
-               (switch-to-buffer "*-jabber-roster-*"))
+           (switch-to-buffer "#clojurescript")
            (window-number-select 7)
            (switch-to-buffer "#ldnclj")
            (window-number-select 8)
@@ -2005,7 +2096,7 @@
 
      #+BEGIN_SRC emacs-lisp
        (require 'paredit)
-       (diminish 'paredit-mode "()")
+       (diminish 'paredit-mode "♎")
        (add-hook 'prog-mode-hook 'paredit-mode)
      #+END_SRC
 
@@ -2041,6 +2132,7 @@
     #+BEGIN_SRC emacs-lisp
       (require 'highlight-symbol)
       (add-hook 'prog-mode-hook 'highlight-symbol-mode)
+      (with-eval-after-load "highlight-symbol" (diminish 'highlight-symbol-mode))
     #+END_SRC
 
 *** color-identifiers-mode
@@ -2243,7 +2335,7 @@
       I also want to be able to navigate to the "-" characters in words.
 
       #+BEGIN_SRC emacs-lisp
-        (add-hook 'cider-mode-hook 'subword-mode)
+        ;;(add-hook 'cider-mode-hook 'subword-mode)
       #+END_SRC
 
 ***** autocomplete
@@ -2408,7 +2500,7 @@
          (split-window-below)
          (windmove-down)
          (shrink-window 25)
-         (switch-to-buffer (sw1nn-nrepl-current-server-buffer))
+         (cider-switch-to-relevant-repl-buffer)
          (end-of-buffer)
          (windmove-up)
          (pop-to-buffer (cider-find-or-create-repl-buffer)))
@@ -2474,7 +2566,7 @@
    csv files.
 
    #+BEGIN_SRC emacs-lisp
-     (require 'csv-mode)
+;;     (require 'csv-mode)
    #+END_SRC
 
 * Multimedia

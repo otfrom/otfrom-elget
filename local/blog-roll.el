@@ -56,6 +56,10 @@
          "http://www.emacswiki.org/emacs/index.rss?action=rss"
          "~/org/feeds/programming.org" "Emacs Wiki"
          :template "\n* %h\n  %U\n  %a\n")
+        ("Visualising Data"
+         "http://www.visualisingdata.com/index.php/feed/"
+         "~/org/feeds/programming.org"
+         "Visualising Data")
         ("Robert Rees - Echo One"
          "http://rrees.me/feed/"
          "~/org/feeds/people.org" "Robert Rees - Echo One"
