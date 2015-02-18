@@ -1050,6 +1050,8 @@
       #+BEGIN_SRC emacs-lisp
         (require 'clocker)
         (diminish 'clocker-mode "⌚")
+        (add-hook 'kill-emacs-hook
+                  (lambda () (clocker-mode 0)))
       #+END_SRC
 
 ***** Tracking effort vs estimates with clocksum
@@ -2221,13 +2223,8 @@
                          (define-key paredit-mode-map
                            (kbd "}") 'paredit-close-curly)
                          (rainbow-blocks-mode)
+                         (diminish 'rainbow-blocks-mode "❒")
                          (local-set-key (kbd "C-;") 'comment-dwim)))
-    #+END_SRC
-
-    But let's not have Blocks be so big in the modeline.
-
-    #+BEGIN_SRC emacs-lisp
-      (diminish 'rainbow-blocks-mode "❒")
     #+END_SRC
 
 *** emacs-lisp
@@ -2305,7 +2302,7 @@
 
       #+BEGIN_SRC emacs-lisp
         (require 'cider)
-        (diminish 'cider-mode "Cλ")
+        (setq cider-mode-line '(:eval (format " Cλ[%s]" (cider-current-ns))))
       #+END_SRC
 
 ***** Popup compilation messages
